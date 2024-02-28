@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { InvoiceItem } from './schema/invoice-item.schema';
 import { Customer } from './schema/customer.schema';
+import { InvoiceRepository } from './repository/invoce.repository';
 
 @Injectable()
 export class AccountingService {
@@ -13,6 +14,7 @@ export class AccountingService {
     @InjectModel(InvoiceItem.name)
     private readonly invoiceItemModel: Model<InvoiceItem>,
     @InjectModel(Customer.name) private readonly customerModel: Model<Customer>,
+    private invoiceRepository: InvoiceRepository,
   ) {}
 
   async createInvoice(createIvoiceDto: CreateInvoiceDto): Promise<Invoice> {
@@ -31,7 +33,8 @@ export class AccountingService {
   }
 
   async getAllInvoices(): Promise<Invoice[]> {
-    return await this.invoiceModel.find().exec();
+    return await this.invoiceRepository.finds({});
+    // return await this.invoiceModel.find().exec();
   }
 
   //create customer
