@@ -6,6 +6,7 @@ import { Board } from './entities/board.entity';
 import { BoardRepository } from './board.repository';
 
 // https://velog.io/@sheoae12/NestJS-Custom-Repository-%EB%A7%8C%EB%93%A4%EA%B8%B0
+// https://junyharang.tistory.com/523
 @Module({
   imports: [TypeOrmModule.forFeature([Board])],
   controllers: [BoardsController],

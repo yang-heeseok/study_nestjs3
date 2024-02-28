@@ -11,8 +11,9 @@ import {
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
-import { Board, BoardStatus } from './board.model';
 import { BoardStatusValidationPipe } from './pips/board-status-validation.pipe';
+import { BoardStatus } from './board.status.enum';
+import { Board } from './entities/board.entity';
 // import { CreateBoardDto } from './dto/create-board.dto';
 // import { UpdateBoardDto } from './dto/update-board.dto';
 
