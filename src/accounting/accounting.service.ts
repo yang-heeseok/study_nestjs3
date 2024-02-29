@@ -2,19 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Invoice } from './schema/invoice.schema';
 import { Model } from 'mongoose';
-import { CreateInvoiceDto } from './dto/create-invoice.dto';
+import {
+  CreateCustomerDto,
+  CreateInvoiceDto,
+  CreateInvoiceItemDto,
+} from './dto/create-invoice.dto';
 import { InvoiceItem } from './schema/invoice-item.schema';
 import { Customer } from './schema/customer.schema';
 import { InvoiceRepository } from './repository/invoce.repository';
+import { InvoceItemRepository } from './repository/invoce-item.repository';
+import { CustomerRepository } from './repository/customer.repository';
 
 @Injectable()
 export class AccountingService {
   constructor(
     @InjectModel(Invoice.name) private readonly invoiceModel: Model<Invoice>,
-    @InjectModel(InvoiceItem.name)
-    private readonly invoiceItemModel: Model<InvoiceItem>,
-    @InjectModel(Customer.name) private readonly customerModel: Model<Customer>,
     private invoiceRepository: InvoiceRepository,
+    private invoceItemRepository: InvoceItemRepository,
+    private customerRepository: CustomerRepository,
   ) {}
 
   async createInvoice(createIvoiceDto: CreateInvoiceDto): Promise<Invoice> {
@@ -22,8 +27,8 @@ export class AccountingService {
       createIvoiceDto;
     const invoiceItems = await this.createInvoiceItems(obj_items);
     const customer = await this.createOrFindCustomer({
-      name: customer_name,
-      phone: customer_phone,
+      customer_name: customer_name,
+      customer_phone: customer_phone,
     });
     return await this.invoiceModel.create({
       invoice_date,
@@ -33,30 +38,19 @@ export class AccountingService {
   }
 
   async getAllInvoices(): Promise<Invoice[]> {
-    return await this.invoiceRepository.finds({});
-    // return await this.invoiceModel.find().exec();
+    const invoces = await this.invoiceRepository.findWithPopulate({});
+    return invoces;
   }
 
-  //create customer
-  private async createOrFindCustomer(customerData: {
-    name: string;
-    phone: string;
-  }): Promise<Customer> {
-    const customer = await this.customerModel
-      .findOne({ phone: customerData.phone })
-      .exec();
-    if (customer) {
-      return customer;
-    }
-    return await this.customerModel.create(customerData);
+  private async createOrFindCustomer(
+    customerData: CreateCustomerDto,
+  ): Promise<Customer> {
+    return await this.customerRepository.create(customerData);
   }
 
-  //create invoice item
   private async createInvoiceItems(
-    invoiceItemData: [
-      { good_name: string; good_amount: number; good_price: number },
-    ],
+    invoiceItemData: [CreateInvoiceItemDto],
   ): Promise<InvoiceItem[]> {
-    return await this.invoiceItemModel.create(invoiceItemData);
+    return await this.invoceItemRepository.create(invoiceItemData);
   }
 }

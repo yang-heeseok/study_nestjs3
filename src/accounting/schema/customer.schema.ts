@@ -14,7 +14,7 @@ export class Customer {
 
   //Add one-to-many relation to InvoiceSchema
   @Prop({ type: [{ type: mongoose.Types.ObjectId, ref: 'Invoice' }] })
-  obj_invoices: [Invoice];
+  obj_invoices: Invoice[];
 }
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);

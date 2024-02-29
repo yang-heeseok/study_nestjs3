@@ -6,6 +6,8 @@ import { AccountingService } from './accounting.service';
 import { Customer, CustomerSchema } from './schema/customer.schema';
 import { InvoiceItem, InvoiceItemSchema } from './schema/invoice-item.schema';
 import { InvoiceRepository } from './repository/invoce.repository';
+import { InvoceItemRepository } from './repository/invoce-item.repository';
+import { CustomerRepository } from './repository/customer.repository';
 
 @Module({
   imports: [
@@ -16,6 +18,11 @@ import { InvoiceRepository } from './repository/invoce.repository';
     ]),
   ],
   controllers: [AccountingController],
-  providers: [AccountingService, InvoiceRepository],
+  providers: [
+    AccountingService,
+    InvoiceRepository,
+    InvoceItemRepository,
+    CustomerRepository,
+  ],
 })
 export class AccountingModule {}
