@@ -6,14 +6,12 @@ import { Invoice } from './schema/invoice.schema';
 @Controller('accounting')
 export class AccountingController {
   constructor(private readonly accountingService: AccountingService) {}
-
   @Post('invoice')
   async createInvoice(
     @Body() createInvoiceDto: CreateInvoiceDto,
   ): Promise<Invoice> {
     return await this.accountingService.createInvoice(createInvoiceDto);
   }
-
   @Get('invoice/all')
   async getAllInvoices(): Promise<Invoice[]> {
     return await this.accountingService.getAllInvoices();
