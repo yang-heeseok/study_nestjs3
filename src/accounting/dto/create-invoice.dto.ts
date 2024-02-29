@@ -27,3 +27,8 @@ export class CreateInvoiceShortDto {
   obj_customer: string;
   obj_items: [string];
 }
+
+export class ExDto {
+  searchString: string;
+  replaceString: string;
+}

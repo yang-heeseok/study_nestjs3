@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, UpdateQuery } from 'mongoose';
 import { Customer, CustomerDocument } from '../schema/customer.schema';
 import { CreateCustomerDto } from '../dto/create-invoice.dto';
 
@@ -28,5 +28,12 @@ export class CustomerRepository {
       return customer;
     }
     return await this.customerModel.create(createCustomerDto);
+  }
+
+  async bulkUpdate(
+    filter: FilterQuery<CustomerDocument>,
+    update: UpdateQuery<CustomerDocument>,
+  ) {
+    return await this.customerModel.updateMany(filter, update);
   }
 }

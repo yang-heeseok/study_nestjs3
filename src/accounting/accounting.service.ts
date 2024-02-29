@@ -6,6 +6,7 @@ import {
   CreateCustomerDto,
   CreateInvoiceDto,
   CreateInvoiceItemDto,
+  ExDto,
 } from './dto/create-invoice.dto';
 import { InvoiceItem } from './schema/invoice-item.schema';
 import { Customer } from './schema/customer.schema';
@@ -52,5 +53,27 @@ export class AccountingService {
     invoiceItemData: [CreateInvoiceItemDto],
   ): Promise<InvoiceItem[]> {
     return await this.invoceItemRepository.create(invoiceItemData);
+  }
+
+  async getAllCustomer(): Promise<Customer[]> {
+    const customer = await this.customerRepository.finds({});
+    return customer;
+  }
+
+  async updateCustomer(exDto: ExDto) {
+    console.log('customer');
+    const { searchString, replaceString } = exDto;
+    // Use $regex for case-insensitive substring matching
+    const filter = { name: { $regex: new RegExp(searchString, 'i') } };
+    // Use $set to update specific fields
+    const update = { $set: { phone: replaceString } };
+
+    try {
+      const result = await this.customerRepository.bulkUpdate(filter, update);
+      console.log('Updated:', result);
+    } catch (error) {
+      console.error('Error updating customer:', error);
+      throw new Error('Failed to update customer');
+    }
   }
 }
