@@ -4,7 +4,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Invoice, InvoiceSchema } from './schema/invoice.schema';
 import { AccountingService } from './accounting.service';
 import { Customer, CustomerSchema } from './schema/customer.schema';
-import { InvoiceItem, InvoiceItemSchema } from './schema/invoice-item.schema';
+import { InvoiceItem, InvoiceItemSchema } from './schema/invoiceItem.schema';
+import { InvoiceRepository } from './repository/invoice.repository';
+import { InvoiceItemRepository } from './repository/invoiceItem.repository';
+import { CustomerRepository } from './repository/customer.repository';
 
 @Module({
   imports: [
@@ -16,6 +19,11 @@ import { InvoiceItem, InvoiceItemSchema } from './schema/invoice-item.schema';
     ]),
   ],
   controllers: [AccountingController],
-  providers: [AccountingService],
+  providers: [
+    AccountingService,
+    InvoiceRepository,
+    InvoiceItemRepository,
+    CustomerRepository,
+  ],
 })
 export class AccountingModule {}

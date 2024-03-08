@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Customer } from './customer.schema';
-import { InvoiceItem } from './invoice-item.schema';
+import { InvoiceItem } from './invoiceItem.schema';
 
 export type InvoiceDocument = HydratedDocument<Invoice>;
 
@@ -31,7 +31,7 @@ export class Invoice {
     */
   // 👆 this transform to this 👇 (OneToMany relation)
   @Prop({ type: [{ type: mongoose.Types.ObjectId, ref: 'InvoiceItem' }] })
-  obj_items: [InvoiceItem];
+  obj_items: InvoiceItem[];
 }
 
 export const InvoiceSchema = SchemaFactory.createForClass(Invoice);
